@@ -2,7 +2,14 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>測試-4</title>
+  <title>測試-5</title>
+
+  <!-- 防止社群平台顯示預覽圖 -->
+  <meta property="og:image" content="none" />
+  <meta property="og:title" content=" " />
+  <meta property="og:description" content=" " />
+  <meta name="twitter:card" content="summary" />
+
   <style>
     body {
       margin: 0;
@@ -22,6 +29,7 @@
       border-radius: 8px;
       cursor: pointer;
       z-index: 1;
+      transition: transform 0.2s;
     }
     #jumpscare {
       position: fixed;
@@ -48,6 +56,7 @@
 <h1>單腳拉屎</h1>
 <button id="scareBtn">沒人會拒絕一個紅色按鈕</button>
 
+<!-- 圖片不會先顯示出來，除非點了按鈕 -->
 <img id="jumpscare" src="jumpscare.jpg" alt="BOO!">
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
