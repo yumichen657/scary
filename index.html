@@ -2,90 +2,122 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>測試-5</title>
-
-  <!-- 防止社群平台顯示預覽圖 -->
-  <meta property="og:image" content="none" />
-  <meta property="og:title" content=" " />
-  <meta property="og:description" content=" " />
-  <meta name="twitter:card" content="summary" />
-
+  <title>測試-6</title>
   <style>
     body {
-      margin: 0;
-      background: black;
-      color: white;
+      font-family: "Segoe UI", sans-serif;
+      background: #fff8e1;
       text-align: center;
-      font-family: sans-serif;
-      overflow: hidden;
+      padding: 50px;
+      color: #333;
     }
-    #scareBtn {
-      position: absolute;
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+    }
+
+    button {
+      font-size: 18px;
       padding: 12px 24px;
-      font-size: 20px;
-      background-color: red;
-      color: white;
+      margin: 10px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      background-color: #ffd76e;
       cursor: pointer;
-      z-index: 1;
-      transition: transform 0.2s;
+      transition: 0.3s;
     }
+
+    button:hover {
+      background-color: #ffc84a;
+    }
+
     #jumpscare {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      display: none;
-      z-index: 999;
-      animation: shake 0.1s infinite;
+      z-index: 9999;
+      animation: shake 0.15s infinite;
     }
+
     @keyframes shake {
-      0% { transform: translate(1px, 1px); }
-      25% { transform: translate(-2px, 3px); }
-      50% { transform: translate(2px, -1px); }
-      75% { transform: translate(-1px, -2px); }
-      100% { transform: translate(1px, 2px); }
+      0% { transform: translate(0px, 0px); }
+      25% { transform: translate(5px, -5px); }
+      50% { transform: translate(-5px, 5px); }
+      75% { transform: translate(5px, -5px); }
+      100% { transform: translate(-5px, 5px); }
+    }
+
+    #resultText, #evaluation, #feedback {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-<h1>單腳拉屎</h1>
-<button id="scareBtn">沒人會拒絕一個紅色按鈕</button>
+<h1>🔮 心理測驗</h1>
+<p id="question">請問你喜歡貓還是狗？</p>
 
-<!-- 圖片不會先顯示出來，除非點了按鈕 -->
+<div id="choices">
+  <button onclick="choose('貓')">🐱 貓</button>
+  <button onclick="choose('狗')">🐶 狗</button>
+</div>
+
+<div id="resultText">
+  <p id="line1"></p>
+  <p id="line2"></p>
+</div>
+
+<div id="evaluation">
+  <p>你對這個測驗感到滿意嗎？</p>
+</div>
+
+<div id="feedback">
+  <button onclick="jumpscare()">滿意</button>
+  <button onclick="jumpscare()">不滿意</button>
+</div>
+
 <img id="jumpscare" src="jumpscare.jpg" alt="BOO!">
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
 <script>
-  const button = document.getElementById("scareBtn");
-  const jumpscare = document.getElementById("jumpscare");
-  const scream = document.getElementById("scream");
+  function choose(animal) {
+    // 隱藏選項
+    document.getElementById("question").style.display = "none";
+    document.getElementById("choices").style.display = "none";
 
-  let clickCount = 0;
-  moveButton();
+    // 顯示結果
+    const line1 = document.getElementById("line1");
+    const line2 = document.getElementById("line2");
+    line1.innerText = `你選擇了${animal}，代表你喜歡${animal}。`;
+    line2.innerText = "你的選擇顯示你是一個非常有趣的人。";
 
-  button.addEventListener("click", () => {
-    clickCount++;
-    if (clickCount < 5) {
-      moveButton();
-      button.style.transform = `scale(${1 - clickCount * 0.1})`;
-    } else {
-      jumpscare.style.display = "block";
-      scream.currentTime = 0;
-      scream.play();
-      button.remove(); // 移除按鈕
-    }
-  });
+    document.getElementById("resultText").style.display = "block";
 
-  function moveButton() {
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 60);
-    button.style.left = `${x}px`;
-    button.style.top = `${y}px`;
+    // 等一小段時間再顯示滿意度調查
+    setTimeout(() => {
+      document.getElementById("evaluation").style.display = "block";
+      document.getElementById("feedback").style.display = "block";
+    }, 1500);
+  }
+
+  function jumpscare() {
+    const img = document.getElementById("jumpscare");
+    const audio = document.getElementById("scream");
+    img.style.display = "block";
+    audio.play();
+    document.body.style.backgroundColor = "black";
+    document.body.innerHTML = ""; // 清空畫面
+    document.body.appendChild(img); // 只保留圖片
   }
 </script>
 
