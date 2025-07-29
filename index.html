@@ -2,32 +2,59 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>假的心理測驗</title>
+  <title>測試-09</title>
   <style>
     body {
       margin: 0;
-      background: black;
-      color: white;
+      background: linear-gradient(135deg, #1e1e2f, #282c34);
+      color: #f0f0f0;
       text-align: center;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px #0008;
     }
     button {
-      padding: 12px 24px;
-      font-size: 20px;
-      margin: 10px;
-      border-radius: 8px;
+      padding: 14px 28px;
+      font-size: 1.3rem;
+      margin: 15px 20px;
+      border-radius: 12px;
       cursor: pointer;
       border: none;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 4px 10px rgb(0 0 0 / 0.3);
+      user-select: none;
+    }
+    button:hover {
+      transform: scale(1.05);
     }
     #choiceButtons button {
-      background-color: #007bff;
+      background: linear-gradient(45deg, #4e9af1, #1c66d1);
       color: white;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(28,102,209,0.7);
     }
     #satisfactionButtons button {
-      background-color: #28a745;
+      background: linear-gradient(45deg, #47b960, #2f7c34);
       color: white;
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(47,124,52,0.7);
+    }
+    #analysis {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-shadow: 1.5px 1.5px 3px #000a;
+    }
+    #step1 p, #step3 p {
+      font-size: 1.6rem;
+      margin-bottom: 30px;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px #0008;
     }
     #jumpscare {
       position: fixed;
@@ -36,7 +63,7 @@
       height: 100vh;
       object-fit: cover;
       display: none;
-      z-index: 999;
+      z-index: 9999;
       animation: shake 0.1s infinite;
     }
     @keyframes shake {
@@ -61,14 +88,9 @@
   </div>
 </div>
 
-<!-- 第二步：顯示解析 -->
+<!-- 第二步：顯示解析與滿意度調查 -->
 <div id="step2" style="display:none;">
   <p id="analysis"></p>
-  <button id="nextBtn">下一步</button>
-</div>
-
-<!-- 第三步：滿意度調查 -->
-<div id="step3" style="display:none;">
   <p>你滿意這個解析嗎？</p>
   <div id="satisfactionButtons">
     <button>滿意</button>
@@ -83,11 +105,9 @@
 <script>
   const step1 = document.getElementById("step1");
   const step2 = document.getElementById("step2");
-  const step3 = document.getElementById("step3");
   const analysis = document.getElementById("analysis");
   const jumpscare = document.getElementById("jumpscare");
   const scream = document.getElementById("scream");
-  const nextBtn = document.getElementById("nextBtn");
 
   const analysisTexts = {
     "貓": "你選擇貓，代表你喜歡貓。",
@@ -104,16 +124,10 @@
     });
   });
 
-  // 第二步：點下一步進入滿意度調查
-  nextBtn.addEventListener("click", () => {
-    step2.style.display = "none";
-    step3.style.display = "block";
-  });
-
-  // 第三步：點滿意或不滿意都驚嚇
+  // 第二步：點滿意或不滿意，跳驚嚇
   document.querySelectorAll("#satisfactionButtons button").forEach(btn => {
     btn.addEventListener("click", () => {
-      step3.style.display = "none";
+      step2.style.display = "none";
       jumpscare.style.display = "block";
       scream.currentTime = 0;
       scream.play();
