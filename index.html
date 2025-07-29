@@ -2,7 +2,14 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>測試-09</title>
+  <title>測試-10</title>
+
+  <!-- 防止社群平台顯示預覽圖 -->
+  <meta property="og:image" content="none" />
+  <meta property="og:title" content=" " />
+  <meta property="og:description" content=" " />
+  <meta name="twitter:card" content="summary" />
+
   <style>
     body {
       margin: 0;
@@ -98,8 +105,10 @@
   </div>
 </div>
 
-<!-- 驚嚇畫面 -->
-<img id="jumpscare" src="jumpscare.jpg" alt="BOO!" />
+<!-- 隱藏的驚嚇圖片 -->
+<img id="jumpscare" src="jumpscare.jpg" alt="BOO!" style="display:none;width:0;height:0;" />
+
+<!-- 驚嚇聲音 -->
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
 <script>
@@ -129,6 +138,8 @@
     btn.addEventListener("click", () => {
       step2.style.display = "none";
       jumpscare.style.display = "block";
+      jumpscare.style.width = "100vw";
+      jumpscare.style.height = "100vh";
       scream.currentTime = 0;
       scream.play();
     });
