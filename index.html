@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>測試-5</title>
-
-  <!-- 防止社群平台顯示預覽圖 -->
-  <meta property="og:image" content="none" />
-  <meta property="og:title" content=" " />
-  <meta property="og:description" content=" " />
-  <meta name="twitter:card" content="summary" />
-
+  <meta charset="UTF-8" />
+  <title>假的心理測驗</title>
   <style>
     body {
       margin: 0;
@@ -19,22 +12,26 @@
       font-family: sans-serif;
       overflow: hidden;
     }
-    #scareBtn {
-      position: absolute;
+    button {
       padding: 12px 24px;
       font-size: 20px;
-      background-color: red;
-      color: white;
-      border: none;
+      margin: 10px;
       border-radius: 8px;
       cursor: pointer;
-      z-index: 1;
-      transition: transform 0.2s;
+      border: none;
+      transition: background-color 0.3s;
+    }
+    #choiceButtons button {
+      background-color: #007bff;
+      color: white;
+    }
+    #satisfactionButtons button {
+      background-color: #28a745;
+      color: white;
     }
     #jumpscare {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
@@ -53,40 +50,75 @@
 </head>
 <body>
 
-<h1>單腳拉屎</h1>
-<button id="scareBtn">沒人會拒絕一個紅色按鈕</button>
+<h1>心理測驗</h1>
 
-<!-- 圖片不會先顯示出來，除非點了按鈕 -->
-<img id="jumpscare" src="jumpscare.jpg" alt="BOO!">
+<!-- 第一步：選擇貓或狗 -->
+<div id="step1">
+  <p>你喜歡貓還是狗？</p>
+  <div id="choiceButtons">
+    <button data-animal="貓">貓</button>
+    <button data-animal="狗">狗</button>
+  </div>
+</div>
+
+<!-- 第二步：顯示解析 -->
+<div id="step2" style="display:none;">
+  <p id="analysis"></p>
+  <button id="nextBtn">下一步</button>
+</div>
+
+<!-- 第三步：滿意度調查 -->
+<div id="step3" style="display:none;">
+  <p>你滿意這個解析嗎？</p>
+  <div id="satisfactionButtons">
+    <button>滿意</button>
+    <button>不滿意</button>
+  </div>
+</div>
+
+<!-- 驚嚇畫面 -->
+<img id="jumpscare" src="jumpscare.jpg" alt="BOO!" />
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
 <script>
-  const button = document.getElementById("scareBtn");
+  const step1 = document.getElementById("step1");
+  const step2 = document.getElementById("step2");
+  const step3 = document.getElementById("step3");
+  const analysis = document.getElementById("analysis");
   const jumpscare = document.getElementById("jumpscare");
   const scream = document.getElementById("scream");
+  const nextBtn = document.getElementById("nextBtn");
 
-  let clickCount = 0;
-  moveButton();
+  const analysisTexts = {
+    "貓": "你選擇貓，代表你喜歡貓。",
+    "狗": "你選擇狗，代表你喜歡狗。"
+  };
 
-  button.addEventListener("click", () => {
-    clickCount++;
-    if (clickCount < 5) {
-      moveButton();
-      button.style.transform = `scale(${1 - clickCount * 0.1})`;
-    } else {
+  // 第一步：選擇貓或狗
+  document.querySelectorAll("#choiceButtons button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const animal = btn.getAttribute("data-animal");
+      analysis.textContent = analysisTexts[animal];
+      step1.style.display = "none";
+      step2.style.display = "block";
+    });
+  });
+
+  // 第二步：點下一步進入滿意度調查
+  nextBtn.addEventListener("click", () => {
+    step2.style.display = "none";
+    step3.style.display = "block";
+  });
+
+  // 第三步：點滿意或不滿意都驚嚇
+  document.querySelectorAll("#satisfactionButtons button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      step3.style.display = "none";
       jumpscare.style.display = "block";
       scream.currentTime = 0;
       scream.play();
-      button.remove(); // 移除按鈕
-    }
+    });
   });
-
-  function moveButton() {
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 60);
-    button.style.left = `${x}px`;
-    button.style.top = `${y}px`;
-  }
 </script>
 
 </body>
