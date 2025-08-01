@@ -18,11 +18,13 @@
       overflow: hidden;
       padding: 40px 20px;
     }
+
     h1 {
       font-size: 3rem;
       margin-bottom: 40px;
       text-shadow: 2px 2px 5px #0008;
     }
+
     button {
       padding: 14px 28px;
       font-size: 1.3rem;
@@ -30,46 +32,99 @@
       border-radius: 12px;
       cursor: pointer;
       border: none;
-      transition: background-color 0.3s, transform 0.2s, left 0.2s, top 0.2s;
+      transition: background-color 0.3s, transform 0.2s;
       box-shadow: 0 4px 10px rgb(0 0 0 / 0.3);
       user-select: none;
       position: relative;
     }
+
     button:hover {
       transform: scale(1.05);
     }
+
+    /* 開始按鈕 */
+    #startBtn {
+      background: linear-gradient(45deg, #ffcc00, #ff9900);
+      color: #222;
+      font-size: 1.8rem;
+      font-weight: bold;
+      padding: 20px 40px;
+      border-radius: 50px;
+      box-shadow: 0 0 20px #ffcc00aa;
+      animation: bounce 1.2s infinite;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    #startBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px #ffcc00ee;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* 選貓狗按鈕 */
     #choiceButtons button {
       background: linear-gradient(45deg, #4e9af1, #1c66d1);
       color: white;
       font-weight: 600;
       box-shadow: 0 5px 15px rgba(28,102,209,0.7);
     }
+
+    /* 満意不滿意區 */
     #satisfactionButtons {
       display: flex;
       justify-content: center;
       gap: 40px;
       flex-wrap: wrap;
     }
-    #satisfactionButtons button {
-      background: linear-gradient(45deg, #47b960, #2f7c34);
+
+    #satisfiedBtn {
+      background: linear-gradient(to right, #ff4d4d, #cc0000);
       color: white;
-      font-weight: 700;
-      box-shadow: 0 5px 15px rgba(47,124,52,0.7);
-      font-size: 1.5rem;
+      font-weight: bold;
+      font-size: 1.6rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+      transition: transform 0.3s ease;
       min-width: 140px;
     }
+
+    #satisfiedBtn:hover {
+      transform: scale(1.1) rotate(-2deg);
+    }
+
+    #unsatisfiedBtn {
+      background: linear-gradient(to right, #4da6ff, #0052cc);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.6rem;
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(0, 102, 204, 0.5);
+      transition: transform 0.2s ease;
+      min-width: 140px;
+    }
+
+    #unsatisfiedBtn:hover {
+      transform: scale(1.15);
+    }
+
     #analysis {
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 30px;
       text-shadow: 1.5px 1.5px 3px #000a;
     }
+
     #step1 p, #step3 p {
       font-size: 1.6rem;
       margin-bottom: 30px;
       font-weight: 600;
       text-shadow: 1px 1px 3px #0008;
     }
+
     #jumpscare {
       position: fixed;
       top: 0; left: 0;
@@ -80,6 +135,7 @@
       z-index: 9999;
       animation: shake 0.1s infinite;
     }
+
     @keyframes shake {
       0% { transform: translate(1px, 1px); }
       25% { transform: translate(-2px, 3px); }
@@ -115,7 +171,7 @@
   </div>
 </div>
 
-<!-- 隱藏的驚嚇圖片 -->
+<!-- 驚嚇圖片與聲音 -->
 <img id="jumpscare" src="jumpscare.jpg" alt="BOO!" />
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
@@ -154,7 +210,7 @@
     });
   });
 
-  // ✅ 滿意 → 直接驚嚇
+  // 滿意 → 直接驚嚇
   satisfiedBtn.addEventListener("click", () => {
     step2.style.display = "none";
     jumpscare.style.display = "block";
@@ -162,7 +218,7 @@
     scream.play();
   });
 
-  // ❌ 不滿意 → 按鈕亂跑，點5次後消失
+  // 不滿意 → 會跑走，點五次後消失
   unsatisfiedBtn.addEventListener("click", () => {
     unsatisfiedClickCount++;
     if (unsatisfiedClickCount >= 5) {
@@ -173,8 +229,7 @@
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
-    // 隨機出現在右側（螢幕中間到右邊）
-    const randomX = Math.random() * (screenWidth / 2 - 100) + screenWidth / 2;
+    const randomX = Math.random() * (screenWidth / 2) + screenWidth / 2 - 150;
     const randomY = Math.random() * (screenHeight - 200);
 
     unsatisfiedBtn.style.position = "absolute";
