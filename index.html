@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>測試-10</title>
+  <title>心理測驗</title>
   <meta property="og:image" content="none" />
   <meta property="og:title" content=" " />
   <meta property="og:description" content=" " />
@@ -44,12 +44,19 @@
       font-weight: 600;
       box-shadow: 0 5px 15px rgba(28,102,209,0.7);
     }
+    #satisfactionButtons {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
     #satisfactionButtons button {
       background: linear-gradient(45deg, #47b960, #2f7c34);
       color: white;
       font-weight: 700;
       box-shadow: 0 5px 15px rgba(47,124,52,0.7);
       font-size: 1.5rem;
+      min-width: 140px;
     }
     #analysis {
       font-size: 2rem;
@@ -84,7 +91,7 @@
 </head>
 <body>
 
-<h1 id="welcomeTitle">歡迎加入心理測驗</h1>
+<h1 id="welcomeTitle">在人生中總會不停向前，穿越了荒野沙漠、汪洋大海，攀過高山峻嶺、也走過冰原雪地。你是否有想過了解自己，加入這個心裡測驗，找尋自己的答案</h1>
 <div id="startSection">
   <button id="startBtn">開始</button>
 </div>
@@ -125,7 +132,7 @@
   const satisfiedBtn = document.getElementById("satisfiedBtn");
   const unsatisfiedBtn = document.getElementById("unsatisfiedBtn");
 
-  let satisfiedClickCount = 0;
+  let unsatisfiedClickCount = 0;
 
   const analysisTexts = {
     "貓": "你選擇貓，代表你是一個喜歡貓的人。",
@@ -138,7 +145,6 @@
     step1.style.display = "block";
   });
 
-  // 第一步：選擇貓或狗
   document.querySelectorAll("#choiceButtons button").forEach(btn => {
     btn.addEventListener("click", () => {
       const animal = btn.getAttribute("data-animal");
@@ -148,28 +154,32 @@
     });
   });
 
-  // 點滿意按鈕會跑走，點五次後消失
+  // ✅ 滿意 → 直接驚嚇
   satisfiedBtn.addEventListener("click", () => {
-    satisfiedClickCount++;
-    if (satisfiedClickCount >= 5) {
-      satisfiedBtn.style.display = "none";
-      return;
-    }
-
-    const randomX = Math.random() * 200 - 100;
-    const randomY = Math.random() * 100 - 50;
-
-    satisfiedBtn.style.position = "relative";
-    satisfiedBtn.style.left = `${randomX}px`;
-    satisfiedBtn.style.top = `${randomY}px`;
-  });
-
-  // 不滿意：驚嚇畫面
-  unsatisfiedBtn.addEventListener("click", () => {
     step2.style.display = "none";
     jumpscare.style.display = "block";
     scream.currentTime = 0;
     scream.play();
+  });
+
+  // ❌ 不滿意 → 按鈕亂跑，點5次後消失
+  unsatisfiedBtn.addEventListener("click", () => {
+    unsatisfiedClickCount++;
+    if (unsatisfiedClickCount >= 5) {
+      unsatisfiedBtn.style.display = "none";
+      return;
+    }
+
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // 隨機出現在右側（螢幕中間到右邊）
+    const randomX = Math.random() * (screenWidth / 2 - 100) + screenWidth / 2;
+    const randomY = Math.random() * (screenHeight - 200);
+
+    unsatisfiedBtn.style.position = "absolute";
+    unsatisfiedBtn.style.left = `${randomX}px`;
+    unsatisfiedBtn.style.top = `${randomY}px`;
   });
 </script>
 
