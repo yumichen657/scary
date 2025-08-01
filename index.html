@@ -2,7 +2,9 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>心理測驗</title>
+  <title>測試-10</title>
+
+  <!-- 防止社群平台顯示預覽圖 -->
   <meta property="og:image" content="none" />
   <meta property="og:title" content=" " />
   <meta property="og:description" content=" " />
@@ -20,29 +22,18 @@
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 1.8rem;
       margin-bottom: 40px;
       text-shadow: 2px 2px 5px #0008;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 40px auto;
     }
 
-    button {
-      padding: 14px 28px;
-      font-size: 1.3rem;
-      margin: 15px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      border: none;
-      transition: background-color 0.3s, transform 0.2s;
-      box-shadow: 0 4px 10px rgb(0 0 0 / 0.3);
-      user-select: none;
-      position: relative;
+    #startScreen {
+      display: block;
     }
 
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    /* 開始按鈕 */
     #startBtn {
       background: linear-gradient(45deg, #ffcc00, #ff9900);
       color: #222;
@@ -53,6 +44,7 @@
       box-shadow: 0 0 20px #ffcc00aa;
       animation: bounce 1.2s infinite;
       transition: transform 0.2s ease, box-shadow 0.3s ease;
+      cursor: pointer;
     }
 
     #startBtn:hover {
@@ -65,7 +57,22 @@
       50% { transform: translateY(-10px); }
     }
 
-    /* 選貓狗按鈕 */
+    button {
+      padding: 14px 28px;
+      font-size: 1.3rem;
+      margin: 15px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 4px 10px rgb(0 0 0 / 0.3);
+      user-select: none;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
     #choiceButtons button {
       background: linear-gradient(45deg, #4e9af1, #1c66d1);
       color: white;
@@ -73,42 +80,12 @@
       box-shadow: 0 5px 15px rgba(28,102,209,0.7);
     }
 
-    /* 満意不滿意區 */
-    #satisfactionButtons {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    #satisfiedBtn {
-      background: linear-gradient(to right, #ff4d4d, #cc0000);
+    #satisfactionButtons button {
+      background: linear-gradient(45deg, #47b960, #2f7c34);
       color: white;
-      font-weight: bold;
-      font-size: 1.6rem;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
-      transition: transform 0.3s ease;
-      min-width: 140px;
-    }
-
-    #satisfiedBtn:hover {
-      transform: scale(1.1) rotate(-2deg);
-    }
-
-    #unsatisfiedBtn {
-      background: linear-gradient(to right, #4da6ff, #0052cc);
-      color: #fff;
-      font-weight: bold;
-      font-size: 1.6rem;
-      border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0, 102, 204, 0.5);
-      transition: transform 0.2s ease;
-      min-width: 140px;
-    }
-
-    #unsatisfiedBtn:hover {
-      transform: scale(1.15);
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(47,124,52,0.7);
+      position: relative;
     }
 
     #analysis {
@@ -123,6 +100,12 @@
       margin-bottom: 30px;
       font-weight: 600;
       text-shadow: 1px 1px 3px #0008;
+    }
+
+    #satisfactionPrompt {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 30px;
     }
 
     #jumpscare {
@@ -147,8 +130,8 @@
 </head>
 <body>
 
-<h1 id="welcomeTitle">在人生中總會不停向前，穿越了荒野沙漠、汪洋大海，攀過高山峻嶺、也走過冰原雪地。你是否有想過了解自己，加入這個心裡測驗，找尋自己的答案</h1>
-<div id="startSection">
+<div id="startScreen">
+  <h1>在人生中總會不停向前，穿越了荒野沙漠、汪洋大海，攀過高山峻嶺、也走過冰原雪地。<br><br>你是否有想過了解自己，加入這個心裡測驗，找尋自己的答案。</h1>
   <button id="startBtn">開始</button>
 </div>
 
@@ -164,43 +147,40 @@
 <!-- 第二步：顯示解析與滿意度調查 -->
 <div id="step2" style="display:none;">
   <p id="analysis"></p>
-  <p style="font-size: 2rem; font-weight: 800;">你滿意這個解析嗎？</p>
+  <p id="satisfactionPrompt">你滿意這個解析嗎？</p>
   <div id="satisfactionButtons">
-    <button id="satisfiedBtn">滿意</button>
-    <button id="unsatisfiedBtn">不滿意</button>
+    <button id="yesBtn">滿意</button>
+    <button id="noBtn">不滿意</button>
   </div>
 </div>
 
-<!-- 驚嚇圖片與聲音 -->
+<!-- 驚嚇圖與音效 -->
 <img id="jumpscare" src="jumpscare.jpg" alt="BOO!" />
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
 <script>
+  const startBtn = document.getElementById("startBtn");
+  const startScreen = document.getElementById("startScreen");
   const step1 = document.getElementById("step1");
   const step2 = document.getElementById("step2");
   const analysis = document.getElementById("analysis");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
   const jumpscare = document.getElementById("jumpscare");
   const scream = document.getElementById("scream");
-  const startBtn = document.getElementById("startBtn");
-  const welcomeTitle = document.getElementById("welcomeTitle");
-  const startSection = document.getElementById("startSection");
-
-  const satisfiedBtn = document.getElementById("satisfiedBtn");
-  const unsatisfiedBtn = document.getElementById("unsatisfiedBtn");
-
-  let unsatisfiedClickCount = 0;
 
   const analysisTexts = {
     "貓": "你選擇貓，代表你是一個喜歡貓的人。",
     "狗": "你選擇狗，代表你是一個喜歡狗的人。"
   };
 
+  // 開始按鈕：跳到問題
   startBtn.addEventListener("click", () => {
-    welcomeTitle.style.display = "none";
-    startSection.style.display = "none";
+    startScreen.style.display = "none";
     step1.style.display = "block";
   });
 
+  // 第一步：選擇動物
   document.querySelectorAll("#choiceButtons button").forEach(btn => {
     btn.addEventListener("click", () => {
       const animal = btn.getAttribute("data-animal");
@@ -210,31 +190,31 @@
     });
   });
 
-  // 滿意 → 直接驚嚇
-  satisfiedBtn.addEventListener("click", () => {
+  // 滿意按鈕亂跑 & 最後消失
+  let runCount = 0;
+  yesBtn.addEventListener("mouseover", () => {
+    if (runCount < 5) {
+      const container = step2.getBoundingClientRect();
+      const maxX = container.width - yesBtn.offsetWidth - 30;
+      const maxY = container.height - yesBtn.offsetHeight - 30;
+      const randX = Math.random() * maxX;
+      const randY = Math.random() * maxY;
+
+      yesBtn.style.position = "absolute";
+      yesBtn.style.left = `${randX}px`;
+      yesBtn.style.top = `${randY}px`;
+      runCount++;
+    } else {
+      yesBtn.style.display = "none";
+    }
+  });
+
+  // 不滿意按鈕觸發驚嚇
+  noBtn.addEventListener("click", () => {
     step2.style.display = "none";
     jumpscare.style.display = "block";
     scream.currentTime = 0;
     scream.play();
-  });
-
-  // 不滿意 → 會跑走，點五次後消失
-  unsatisfiedBtn.addEventListener("click", () => {
-    unsatisfiedClickCount++;
-    if (unsatisfiedClickCount >= 5) {
-      unsatisfiedBtn.style.display = "none";
-      return;
-    }
-
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-
-    const randomX = Math.random() * (screenWidth / 2) + screenWidth / 2 - 150;
-    const randomY = Math.random() * (screenHeight - 200);
-
-    unsatisfiedBtn.style.position = "absolute";
-    unsatisfiedBtn.style.left = `${randomX}px`;
-    unsatisfiedBtn.style.top = `${randomY}px`;
   });
 </script>
 
