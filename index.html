@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>生命的真諦</title>
 
-  <!-- 防止社群平台顯示預覽圖 -->
   <meta property="og:image" content="none" />
   <meta property="og:title" content=" " />
   <meta property="og:description" content=" " />
@@ -135,7 +134,6 @@
   <button id="startBtn">開始</button>
 </div>
 
-<!-- 第一步：選擇貓或狗 -->
 <div id="step1" style="display:none;">
   <p>你比較喜歡貓還是狗？</p>
   <div id="choiceButtons">
@@ -144,7 +142,6 @@
   </div>
 </div>
 
-<!-- 第二步：顯示解析與滿意度調查 -->
 <div id="step2" style="display:none;">
   <p id="analysis"></p>
   <p id="satisfactionPrompt">你滿意這個解析嗎？</p>
@@ -154,7 +151,6 @@
   </div>
 </div>
 
-<!-- 驚嚇圖與音效 -->
 <img id="jumpscare" src="jumpscare.jpg" alt="BOO!" />
 <audio id="scream" src="scream.mp3" preload="auto"></audio>
 
@@ -174,13 +170,11 @@
     "狗": "你選擇狗，代表你是一個喜歡狗的人。"
   };
 
-  // 開始按鈕：跳到問題
   startBtn.addEventListener("click", () => {
     startScreen.style.display = "none";
     step1.style.display = "block";
   });
 
-  // 第一步：選擇動物
   document.querySelectorAll("#choiceButtons button").forEach(btn => {
     btn.addEventListener("click", () => {
       const animal = btn.getAttribute("data-animal");
@@ -190,27 +184,27 @@
     });
   });
 
-  // 滿意按鈕亂跑 & 最後消失
+  // 不滿意按鈕逃跑
   let runCount = 0;
-  yesBtn.addEventListener("mouseover", () => {
+  noBtn.addEventListener("mouseenter", () => {
     if (runCount < 5) {
       const container = step2.getBoundingClientRect();
-      const maxX = container.width - yesBtn.offsetWidth - 30;
-      const maxY = container.height - yesBtn.offsetHeight - 30;
+      const maxX = container.width - noBtn.offsetWidth - 30;
+      const maxY = container.height - noBtn.offsetHeight - 30;
       const randX = Math.random() * maxX;
       const randY = Math.random() * maxY;
 
-      yesBtn.style.position = "absolute";
-      yesBtn.style.left = `${randX}px`;
-      yesBtn.style.top = `${randY}px`;
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${randX}px`;
+      noBtn.style.top = `${randY}px`;
       runCount++;
     } else {
-      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
     }
   });
 
-  // 不滿意按鈕觸發驚嚇
-  noBtn.addEventListener("click", () => {
+  // 滿意觸發驚嚇
+  yesBtn.addEventListener("click", () => {
     step2.style.display = "none";
     jumpscare.style.display = "block";
     scream.currentTime = 0;
