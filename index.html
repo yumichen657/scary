@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>生命的真諦</title>
-
-  <!-- Open Graph metadata -->
   <meta property="og:image" content="none" />
   <meta property="og:title" content=" " />
   <meta property="og:description" content=" " />
@@ -128,37 +126,44 @@
       100% { transform: translate(1px, 2px); }
     }
 
-    /* 強制橫屏提示樣式 */
-    @media screen and (orientation: portrait) {
-      body::before {
-        content: "將裝置轉為橫向體驗更加";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: #000000cc;
-        color: white;
-        font-size: 2rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99999;
-        padding: 15px;
-        text-align: center;
-      }
+    /* 方法二：橫屏提示遮罩 */
+    #orientationOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 99998;
+    }
 
-      #startScreen, #step1, #step2 {
-        display: none !important;
-      }
+    #orientationOverlay span {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    #orientationOverlay:hover {
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
+<div id="orientationOverlay">
+  <span>請將手機轉為橫向觀看<br><small>（點此隱藏）</small></span>
+</div>
+
 <div id="startScreen">
-  <h1>在人生中總會不停向前，穿越了荒野沙漠、汪洋大海，攀過高山峻嶺、也走過冰原雪地。<br>你是否有想過了解自己，加入這個心裡測驗，找尋自己的答案。</h1>
+  <h1>在人生中總會不停向前，穿越了荒野沙漠、汪洋大海，攀過高山峻嶺、也走過冰原雪地。<br><br>你是否有想過了解自己，加入這個心裡測驗，找尋自己的答案。</h1>
   <button id="startBtn">開始</button>
 </div>
 
@@ -193,6 +198,8 @@
   const jumpscare = document.getElementById("jumpscare");
   const scream = document.getElementById("scream");
 
+  const overlay = document.getElementById("orientationOverlay");
+
   const analysisTexts = {
     "貓": "你選擇貓，代表你是一個喜歡貓的人。",
     "狗": "你選擇狗，代表你是一個喜歡狗的人。"
@@ -212,7 +219,7 @@
     });
   });
 
-  // 不滿意按鈕逃跑邏輯
+  // 不滿意按鈕逃跑
   let runCount = 0;
   noBtn.addEventListener("mouseenter", () => {
     if (runCount < 5) {
@@ -231,13 +238,28 @@
     }
   });
 
-  // 滿意觸發驚嚇
+  // 滿意驚嚇
   yesBtn.addEventListener("click", () => {
     step2.style.display = "none";
     jumpscare.style.display = "block";
     scream.currentTime = 0;
     scream.play();
   });
+
+  // 顯示或隱藏橫屏提示
+  function updateOrientationOverlay() {
+    if (window.innerHeight > window.innerWidth) {
+      overlay.style.display = "flex";
+    } else {
+      overlay.style.display = "none";
+    }
+  }
+
+  window.addEventListener("resize", updateOrientationOverlay);
+  window.addEventListener("orientationchange", updateOrientationOverlay);
+  overlay.addEventListener("click", () => overlay.style.display = "none");
+
+  updateOrientationOverlay();
 </script>
 
 </body>
