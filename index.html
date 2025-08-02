@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <title>生命的真諦</title>
 
+  <!-- Open Graph metadata -->
   <meta property="og:image" content="none" />
   <meta property="og:title" content=" " />
   <meta property="og:description" content=" " />
   <meta name="twitter:card" content="summary" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 
   <style>
     body {
@@ -125,6 +127,32 @@
       75% { transform: translate(-1px, -2px); }
       100% { transform: translate(1px, 2px); }
     }
+
+    /* 強制橫屏提示樣式 */
+    @media screen and (orientation: portrait) {
+      body::before {
+        content: "請將裝置轉為橫向以觀看";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #000000cc;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 20px;
+        text-align: center;
+      }
+
+      #startScreen, #step1, #step2 {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -184,7 +212,7 @@
     });
   });
 
-  // 不滿意按鈕逃跑
+  // 不滿意按鈕逃跑邏輯
   let runCount = 0;
   noBtn.addEventListener("mouseenter", () => {
     if (runCount < 5) {
